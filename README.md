@@ -75,3 +75,8 @@ Qui sont d'ailleurs à améliorer. J'ai aussi ajouter un program interne de cré
 **Status du projet**
 
 Aucune étape significative ont été réaliser. Toutefois le projet avance. Continuons sur la lancer et limitons les erreurs de warning afin de poursuivre correctement le projet. ^^
+
+Le system de log detecte l'erreur dans le system de scene de la manière suivante :
+![alt text](assets/Screenshot_2025-12-23_03-07-02.png)
+
+Une erreur de type SEGFAULT dans le program lors du changement des scenes toutefois il arrive à passer quatres scene avant de la produire se dois être un problem de condition pour la fin du jeu.
