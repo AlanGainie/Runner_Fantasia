@@ -1,24 +1,49 @@
 #include "../include/my.h"
 
-#define BLUE(content) "\034[31m content \033[0m"
-#define GREEN(content) "\032[31m content \033[0m"
-#define YELLOW(content) "\031[31m content \033[0m"
+#define GREY "\033[30m"
+#define YELLOW "\033[31m"
+#define GREEN "\033[32m"
+#define RED "\033[33m"
+#define BLUE "\033[34m"
 // #define ORANGE(content) "\033[31m content \033[0m"
-#define RED(content) "\033[31m content \033[0m"
-#define GREY(content) "\030[31m content \033[0m"
+#define RESET "\033[0m"
+
+// Is a littel tools to color writting text in standard output
+#define STR "%s" RESET
+#define INT "%d" RESET
+
+#define ERROR_ERN_LABEL "error errno[PROGRAM FAIL: CRITICAL]"
+#define STANDARD_INP_LABEL "standard input[PROGRAM SUCESS: PASS]"
+#define STANDARD_OUT_LABEL "standard output consol[PROGRAM SUCESS: PASS]"
+#define ERROR_OUT_LABEL "error output[PROGRAM FAIL: WARNING]"
 
 #include <stdio.h>
 #include <signal.h>
 #include <stdlib.h>
 
+/**
+ * @brief
+ *
+ * @param content_to_justified
+ * @param global_content
+ * @return char*
+ */
 char *justified_content(char *content_to_justified, char *global_content)
 {
     char *content_justified = malloc(sizeof(char) * (strlen(global_content + 1) + 1));
     (void)content_justified;
+    (void)content_to_justified;
 
     return 0;
 }
 
+/**
+ * @brief
+ *
+ * @param content
+ * @param input_status
+ * @return char*
+ */
 char *endlog(char *content, char *input_status)
 {
     char *content_end = malloc(sizeof(char) * (strlen(content + 1) + 1));
@@ -36,6 +61,14 @@ char *endlog(char *content, char *input_status)
 }
 
 // TODO: Set le type de sortie, standard, erreur etc.. Et mettre en place le path local du log
+/**
+ * @brief
+ *
+ * @param content
+ * @param status
+ * @param located
+ * @return int
+ */
 int log_message(char *content, int status, void *located)
 {
     static int start_status = 0;
@@ -52,20 +85,16 @@ int log_message(char *content, int status, void *located)
         switch (status)
         {
         case -1:
-            printf("\033[31m%s\033[0m", content);
-            printf(" | \033[31m%d\033[0m:\033[30m error errno[PROGRAM FAIL: CRITICAL]\033[0m", status);
+            printf(RED STR " | " RED INT ": " ERROR_ERN_LABEL, content, status);
             break;
         case 0:
-            printf("\033[32m%s\033[0m", content);
-            printf(" | \033[32m%d\033[0m:\033[30m standard input[PROGRAM SUCESS: PASS]\033[0m", status);
+            printf(GREEN STR " | " GREY INT ": " STANDARD_INP_LABEL, content, status);
             break;
         case 1:
-            printf("\033[34m%s\033[0m", content);
-            printf(" | \033[34m%d\033[0m:\033[30m standard output consol[PROGRAM SUCESS: PASS]\033[0m", status);
+            printf(BLUE STR " | " BLUE INT ": " STANDARD_OUT_LABEL, content, status);
             break;
         case 2:
-            printf("\033[33m%s\033[0m", content);
-            printf(" | \033[33m%d\033[0m:\033[30m error output[PROGRAM FAIL: WARNING]\033[0m", status);
+            printf(YELLOW STR " | " YELLOW INT ": " ERROR_OUT_LABEL, content, status);
             break;
         default:
             printf(content);
@@ -82,6 +111,7 @@ int log_message(char *content, int status, void *located)
 
 void segfaultlog(int sig)
 {
+    (void)sig;
     log_message("💥 Segfault détecté (signal sig)", -1, NULL);
     endlog("💥 Segfault détecté (signal sig)", "0: standard input[PROGRAM SUCESS: PASS]");
     exit(84);

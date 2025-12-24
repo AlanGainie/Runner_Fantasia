@@ -36,11 +36,9 @@ int destroy(window_t structWindow)
 {
     freeMemories();
 
-    if (&structWindow.scenes[CHARGING])
-        destroy_scene(structWindow.scenes[CHARGING]);
+    destroy_scene(structWindow.scenes[CHARGING]);
 
-    if (structWindow.window)
-        sfRenderWindow_destroy(structWindow.window);
+    sfRenderWindow_destroy(structWindow.window);
     return 0;
 }
 
@@ -52,8 +50,7 @@ int destroywindows(window_t structWindow)
 
 int destroyall(window_t structWindow)
 {
-    if (&structWindow)
-        destroywindows(structWindow);
+    destroywindows(structWindow);
     printf("Nettoyage des ressources...\n");
     return 0;
 }
