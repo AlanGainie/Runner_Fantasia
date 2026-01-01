@@ -38,26 +38,35 @@ char *justified_content(char *content_to_justified, char *global_content)
 }
 
 /**
- * @brief
- *
- * @param content
- * @param input_status
- * @return char*
+ * @brief Affiche une ligne de séparation formatée pour le système de logs.
+ * Cette fonction génère dynamiquement deux chaînes composées de tirets (`-`)
+ * ayant la même longueur que les chaînes fournies en paramètres, puis les
+ * affiche sous la forme d’un encadrement visuel dans la sortie standard.
+ * La mémoire allouée est libérée avant la fin de la fonction.
+ * @param content Texte principal du log (colonne gauche).
+ * @param input_status Texte représentant l’état ou le type d’entrée (colonne droite).
  */
-char *endlog(char *content, char *input_status)
+void endlog(const char *content, const char *input_status)
 {
-    char *content_end = malloc(sizeof(char) * (strlen(content + 1) + 1));
-    char *input_status_end = malloc(sizeof(char) * (strlen(input_status + 1) + 1));
+    size_t len1 = strlen(content);
+    size_t len2 = strlen(input_status);
 
-    content_end[strlen(content) + 1] = '\0';
-    for (int counter = 0; content[counter] != '\0'; counter++)
-        content_end[counter] = '-';
-    printf("| %s |", content_end);
-    input_status_end[strlen(input_status) + 1] = '\0';
-    for (int counter = 0; input_status[counter] != '\0'; counter++)
-        input_status_end[counter] = '-';
-    printf(" %s |\n", input_status_end);
-    return 0;
+    char *content_end = malloc(len1 + 1);
+    char *input_status_end = malloc(len2 + 1);
+
+    if (!content_end || !input_status_end)
+        return;
+
+    memset(content_end, '-', len1);
+    content_end[len1] = '\0';
+
+    memset(input_status_end, '-', len2);
+    input_status_end[len2] = '\0';
+
+    printf("| %s | %s |\n", content_end, input_status_end);
+
+    free(content_end);
+    free(input_status_end);
 }
 
 // TODO: Set le type de sortie, standard, erreur etc.. Et mettre en place le path local du log
