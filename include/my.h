@@ -20,6 +20,7 @@
 #ifndef MY_H_
 #define MY_H_
 #include "macros.h"
+#include "terminal.h"
 #define MILLION 1000000.0f
 #define MILLIER 1000.0f
 #define NBRSETTINGSCENE SCENE_COUNT - 2 // Moins SCENE_COUNT et ERRORSCENE

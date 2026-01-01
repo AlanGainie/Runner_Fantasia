@@ -1,32 +1,18 @@
 #include "../include/my.h"
 
-#define GREY "\033[30m"
-#define YELLOW "\033[31m"
-#define GREEN "\033[32m"
-#define RED "\033[33m"
-#define BLUE "\033[34m"
-// #define ORANGE(content) "\033[31m content \033[0m"
-#define RESET "\033[0m"
-
-// Is a littel tools to color writting text in standard output
-#define STR "%s" RESET
-#define INT "%d" RESET
-
-#define ERROR_ERN_LABEL "error errno[PROGRAM FAIL: CRITICAL]"
-#define STANDARD_INP_LABEL "standard input[PROGRAM SUCESS: PASS]"
-#define STANDARD_OUT_LABEL "standard output consol[PROGRAM SUCESS: PASS]"
-#define ERROR_OUT_LABEL "error output[PROGRAM FAIL: WARNING]"
-
 #include <stdio.h>
 #include <signal.h>
 #include <stdlib.h>
 
 /**
- * @brief
+ * @brief Prépare une chaîne justifiée pour l’affichage des logs.
  *
- * @param content_to_justified
- * @param global_content
- * @return char*
+ * Fonction utilitaire destinée à formater un contenu en fonction
+ * d’un texte de référence (implémentation en cours).
+ *
+ * @param content_to_justified Texte à justifier.
+ * @param global_content Texte de référence pour la justification.
+ * @return Chaîne allouée dynamiquement ou NULL.
  */
 char *justified_content(char *content_to_justified, char *global_content)
 {
@@ -38,13 +24,13 @@ char *justified_content(char *content_to_justified, char *global_content)
 }
 
 /**
- * @brief Affiche une ligne de séparation formatée pour le système de logs.
- * Cette fonction génère dynamiquement deux chaînes composées de tirets (`-`)
- * ayant la même longueur que les chaînes fournies en paramètres, puis les
- * affiche sous la forme d’un encadrement visuel dans la sortie standard.
- * La mémoire allouée est libérée avant la fin de la fonction.
- * @param content Texte principal du log (colonne gauche).
- * @param input_status Texte représentant l’état ou le type d’entrée (colonne droite).
+ * @brief Affiche une ligne de séparation pour les logs.
+ *
+ * Génère et affiche deux lignes de tirets correspondant à la
+ * longueur des colonnes du message de log.
+ *
+ * @param content Texte principal du log.
+ * @param input_status Texte représentant l’état du log.
  */
 void endlog(const char *content, const char *input_status)
 {
@@ -69,14 +55,16 @@ void endlog(const char *content, const char *input_status)
     free(input_status_end);
 }
 
-// TODO: Set le type de sortie, standard, erreur etc.. Et mettre en place le path local du log
 /**
- * @brief
+ * @brief Affiche un message de log avec un niveau de gravité.
  *
- * @param content
- * @param status
- * @param located
- * @return int
+ * Formate et affiche un message selon son type (succès,
+ * information, avertissement ou erreur critique).
+ *
+ * @param content Message à afficher.
+ * @param status Niveau du log (-1 à 2).
+ * @param located Contexte réservé pour usage futur.
+ * @return 0 en cas de succès, 84 si le contenu est invalide.
  */
 int log_message(char *content, int status, void *located)
 {
@@ -118,6 +106,14 @@ int log_message(char *content, int status, void *located)
     return 0;
 }
 
+/**
+ * @brief Gère les erreurs de segmentation (SIGSEGV).
+ *
+ * Affiche un message d’erreur critique puis termine
+ * le programme proprement.
+ *
+ * @param sig Signal reçu.
+ */
 void segfaultlog(int sig)
 {
     (void)sig;
